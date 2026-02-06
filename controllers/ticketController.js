@@ -68,3 +68,21 @@ export const assignTicket = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// UPDATE TICKET STATUS
+export const updateTicketStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    const ticket = await Ticket.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    res.json(ticket);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+

@@ -10,10 +10,10 @@ const ticketSchema = new mongoose.Schema(
       default: "medium",
     },
     status: {
-  type: String,
-  enum: ["todo", "inprogress", "done"],  // ✅ no hyphen
-  default: "todo",
-},
+     type: String,
+     enum: ["todo", "inprogress", "done"],  // ✅ no hyphen
+     default: "todo",
+    },
     assignee: { type: String },
     projectId: {
       type: mongoose.Schema.Types.ObjectId,

@@ -16,15 +16,28 @@ export const createTicket = async (req, res) => {
 // GET TICKETS BY PROJECT
 export const getTicketsByProject = async (req, res) => {
   try {
-    const tickets = await Ticket.find({
-      projectId: req.params.projectId,
-    }).sort({ createdAt: -1 });
+    const { status, priority, assignee, search } = req.query;
 
+    let query = { projectId: req.params.projectId };
+
+    if (status) query.status = status;
+    if (priority) query.priority = priority;
+    if (assignee) query.assignee = assignee;
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const tickets = await Ticket.find(query).sort({ createdAt: -1 });
     res.json(tickets);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
+
+
 
 // UPDATE TICKET
 export const updateTicket = async (req, res) => {
